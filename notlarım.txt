@@ -1,0 +1,23 @@
++ one to many iliskiside user silince todo yapısıda silinmeli
+
++ dto da  user + todo listesini birlikte getirmelisin
+
++ Mapping olustur (TodoMap ile UserMap)
+
+    https://youtu.be/ZgB9q5aaS-4
+
+    mapping olusturuldu
+
++ email adresi unique yapıldı
+    kaynak: https://stackoverflow.com/questions/21573550/setting-unique-constraint-with-fluent-api
+            https://www.youtube.com/watch?v=xh7Ngo4vszY
+
+
++ dto şimdilik geçici olusturuyorum ancak onunla ilgili bir video izlemelisin            
+
+    dto da datetime i postman ile denemelisin (henüz yapamadım)
+
+        datetime class i nin public DateTime(int year, int month, int day); seklinde constructor i var
+        createTodoDto da yıl mont ve day i ayrı ayrı int alıp TodoController icinde olsuturuabilirsin
+
+        dto başarılı şekilde olusturuldu
