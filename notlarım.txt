@@ -23,4 +23,8 @@
         dto başarılı şekilde olusturuldu
 
     + TodoController daki CreateTodo methodunda geriye TODO objesi dönüyoruz bunun yerine bir dto dönsek daha
-        iyi olur. Dto ismi getTodo olsun 
+        iyi olur. Dto ismi getTodo olsun
+
+    + User icin bir dto olusturmalıyız  örnegin login yapınca password görülmesin 
+
+        ayrıca login yapınca Todos listeside görülmüyor

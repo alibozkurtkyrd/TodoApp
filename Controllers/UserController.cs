@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApp.Data;
+using TodoApp.Dto;
 using TodoApp.Model;
 using TodoApp.Tools;
 
@@ -33,7 +34,26 @@ namespace TodoApp.Controllers
                 return BadRequest("Username or password is incorrect");
             }
 
-            return Ok(dbUser);
+
+            var getTodoDtos = await _context.Todos
+                .Where(t => t.UserId == dbUser.Id)
+                .Select(t1 => new getTodoDto { // I do not want to get "UserId" from Todo table thus, I use select clauses
+                    Id = t1.Id,
+                    TaskName = t1.TaskName,
+                    IsComplete = t1.IsComplete,
+                    DeadLine = t1.DeadLine,
+                }).ToListAsync(); // get the list of todos list belogns to user from Todos table      
+                
+
+            return Ok(new UserLoginDto
+            {
+                Id = dbUser.Id,
+                Name = dbUser.Name,
+                Surname = dbUser.Surname,
+                PhoneNumber = dbUser.PhoneNumber,
+                Email = dbUser.Email,
+                getTodoDtos = getTodoDtos
+            });
         }
 
         [HttpPost]

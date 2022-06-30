@@ -38,7 +38,7 @@ namespace TodoApp.Controllers
                 .Select(t1 => new getTodoDto
                     {
                         TaskName = t1.TaskName,
-                         UserName = user.Name,
+                         UserName = user.Name,  // user cannot be null becase it is checked in CreateTodo function
                         IsComplete = t1.IsComplete,
                         DeadLine = t1.DeadLine,
                     }
@@ -48,26 +48,6 @@ namespace TodoApp.Controllers
                 // thanks to getTodoDto class, we can show the username which is not belongs to Todo.cs class
 
           
-
-            // var todos = await _context.Todos.Where(t => t.UserId == userId).ToListAsync();
-
-            // var todos = from todo in _context.Todos
-            //     select new getTodoDto
-            //     {
-
-            //     }
-            // List<getTodoDto> Dtos  = new List<getTodoDto>();
-            // foreach (var todo in todos)
-            // {                
-            //     Dtos.Add(new getTodoDto {
-            //         TaskName = todo.TaskName,
-            //         UserName = user.Name,
-            //         IsComplete = todo.IsComplete,
-            //         DeadLine = todo.DeadLine,
-                    
-            //     });
-            // }
-
             return Ok(Dtos);
 
         }
@@ -90,47 +70,10 @@ namespace TodoApp.Controllers
                 UserId = item.UserId
             };
 
-
-            // var getTodo = new getTodoDto
-            // {
-            //     TaskName = item.TaskName,
-            //     UserName = user.Name,
-            //     IsComplete = item.IsComplete,
-            //     DeadLine = new DateTime(item.Year, item.Month, item.Day), 
-                
-            // };
-
              _context.Todos.Add(newTodo);
             await _context.SaveChangesAsync();
             return await getTodo(newTodo.UserId);
         }
-        /*
-        [HttpPost]
-        public async Task<IActionResult> CreateTodo(createTodoDto todo)
-        { 
-            if (ModelState.IsValid)// buraya daha anlamlı bir kosul olabilir (null mu diye bakabilirsin)
-            {
-                await _context.Todos.AddAsync(todo);
-                await _context.SaveChangesAsync();
-
-                // sanırsam buralara user in list prop degerine ekleme yapılmaıs gerekebilr emin degilim örnek gerek
-                return CreatedAtAction("GetItem", new {todo.Id}, todo); // asagıya GetItem methodu yazmlasın
-            }
-
-            return new JsonResult("Something went wrong") {StatusCode = 500};
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetTodo(int id)
-        {
-            var item = await _context.Todos.FirstOrDefaultAsync(x => x.Id == id);
-
-            if (item == null)
-                return NotFound();
-
-            return Ok(item);
-        }
-
-        */
+     
     }
 }

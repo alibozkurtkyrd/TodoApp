@@ -8,6 +8,7 @@ namespace TodoApp.Dto
 {
     public class getTodoDto
     { 
+        public int Id {get; set;}
         public string TaskName { get; set; }
        
         public string? UserName {get; set;}
