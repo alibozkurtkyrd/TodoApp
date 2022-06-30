@@ -21,3 +21,6 @@
         createTodoDto da yıl mont ve day i ayrı ayrı int alıp TodoController icinde olsuturuabilirsin
 
         dto başarılı şekilde olusturuldu
+
+    + TodoController daki CreateTodo methodunda geriye TODO objesi dönüyoruz bunun yerine bir dto dönsek daha
+        iyi olur. Dto ismi getTodo olsun 

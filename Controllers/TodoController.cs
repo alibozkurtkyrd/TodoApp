@@ -30,17 +30,50 @@ namespace TodoApp.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<Todo>>> getTodo(int userId)
+        public async Task<ActionResult<List<getTodoDto>>> getTodo(int userId)
         {
-             var todos = await _context.Todos
-                .Where(t => t.UserId == userId).ToListAsync();
+              var user = await _context.Users.FindAsync(userId);
+             var Dtos = await _context.Todos
+                .Where(t => t.UserId == userId)
+                .Select(t1 => new getTodoDto
+                    {
+                        TaskName = t1.TaskName,
+                         UserName = user.Name,
+                        IsComplete = t1.IsComplete,
+                        DeadLine = t1.DeadLine,
+                    }
 
-            return Ok(todos);
+                )
+                .ToListAsync();
+                // thanks to getTodoDto class, we can show the username which is not belongs to Todo.cs class
+
+          
+
+            // var todos = await _context.Todos.Where(t => t.UserId == userId).ToListAsync();
+
+            // var todos = from todo in _context.Todos
+            //     select new getTodoDto
+            //     {
+
+            //     }
+            // List<getTodoDto> Dtos  = new List<getTodoDto>();
+            // foreach (var todo in todos)
+            // {                
+            //     Dtos.Add(new getTodoDto {
+            //         TaskName = todo.TaskName,
+            //         UserName = user.Name,
+            //         IsComplete = todo.IsComplete,
+            //         DeadLine = todo.DeadLine,
+                    
+            //     });
+            // }
+
+            return Ok(Dtos);
 
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<Todo>>> CreateTodo (createTodoDto item)
+        public async Task<ActionResult<List<getTodoDto>>> CreateTodo (createTodoDto item)
         {
             var user = await _context.Users.FindAsync(item.UserId); // ilgili user ı bluyoruz
 
@@ -48,14 +81,24 @@ namespace TodoApp.Controllers
                 return NotFound();
 
 
-            //DateTime dt1 = new DateTime(item.Year, item.Month, item.Day);
             var newTodo = new Todo
             {
                 TaskName = item.TaskName,
                 IsComplete = item.IsComplete,
                 DeadLine = new DateTime(item.Year, item.Month, item.Day), 
-                User = user
+                User = user,
+                UserId = item.UserId
             };
+
+
+            // var getTodo = new getTodoDto
+            // {
+            //     TaskName = item.TaskName,
+            //     UserName = user.Name,
+            //     IsComplete = item.IsComplete,
+            //     DeadLine = new DateTime(item.Year, item.Month, item.Day), 
+                
+            // };
 
              _context.Todos.Add(newTodo);
             await _context.SaveChangesAsync();
