@@ -27,7 +27,20 @@ namespace TodoApp.Controllers
         {
 
              
-            var todos = await _context.Todos.ToListAsync();
+            // var todos = await _context.Todos.ToListAsync();
+            //left inner join
+            var todos = await _context.Todos 
+                .Include(t => t.User) // navigation property included
+                .Select(t1 => new 
+                {
+                    TaskName = t1.TaskName,
+                    UserName = t1.User.Name,  // user cannot be null becase it is checked in CreateTodo function
+                    IsComplete = t1.IsComplete,
+                    DeadLine = t1.DeadLine,
+                })
+                .OrderBy(t1 => t1.IsComplete) 
+                .ThenBy(t1 => t1.DeadLine)   // The todo list sorting is done according to the "task completion status" and secondly according to the "deadline."
+                .ToListAsync();
 
             return Ok(todos);
         }
@@ -42,7 +55,7 @@ namespace TodoApp.Controllers
         [HttpGet("userid/{userId}")]
         public async Task<ActionResult<List<getTodoDto>>> getTodoByUserId(int userId)
         {
-             var user = await _context.Users.FindAsync(userId);
+             var user = await _context.Users.FindAsync(userId); // first find the user
              var Dtos = await _context.Todos
                 .Where(t => t.UserId == userId)
                 .Select(t1 => new getTodoDto

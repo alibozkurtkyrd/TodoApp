@@ -34,4 +34,11 @@
 
     ** ONEMLI : GetTodos methodunda user name i de getirmelisn
 
-            userController de olusturacagın getUser ile bunu halledebilirisn (getUserName de olaiblir)
+            - userController de olusturacagın getUser ile bunu halledebilirisn (getUserName de olaiblir)
+            - ya da iki tabloyu birleştimek için join olaiblir
+            - burada left ya da right join yapmalısın(normal join olmaz) : https://youtu.be/K_NTrNO5ADY  (dk 4.30 da nedeni açıklanmış)
+
+            ** ÇÖZÜLDÜ
+
+            ** AYRICA bu methodu tarihe göre de sıralayabilrsin (dealine ini en yakın olan en üstte olur)
+                ÇÖZÜLDÜ
