@@ -33,10 +33,12 @@ namespace TodoApp.Controllers
                 .Include(t => t.User) // navigation property included
                 .Select(t1 => new 
                 {
+                    Id = t1.Id,
                     TaskName = t1.TaskName,
                     UserName = t1.User.Name,  // user cannot be null becase it is checked in CreateTodo function
                     IsComplete = t1.IsComplete,
                     DeadLine = t1.DeadLine,
+                    UserId = t1.UserId
                 })
                 .OrderBy(t1 => t1.IsComplete) 
                 .ThenBy(t1 => t1.DeadLine)   // The todo list sorting is done according to the "task completion status" and secondly according to the "deadline."
@@ -48,8 +50,19 @@ namespace TodoApp.Controllers
         [HttpGet("todoid/{todoid}")]
         public async Task<IActionResult> GetTodo(int todoId)
         { // bu method çıkarılmalı bence ya da 
-            var todo = await _context.Todos.FindAsync(todoId);
-            return Ok(todo);
+            //var todo = await _context.Todos.FindAsync(todoId);
+
+            // lets try query syntax
+            var query = from td in _context.Todos where td.Id == todoId select new {
+                    Id = td.Id,
+                    TaskName = td.TaskName,
+                    UserName = td.User.Name,  // user cannot be null becase it is checked in CreateTodo function
+                    IsComplete = td.IsComplete,
+                    DeadLine = td.DeadLine,
+                    UserId = td.UserId
+            };
+
+            return Ok(query);
         }
 
         [HttpGet("userid/{userId}")]
@@ -96,6 +109,37 @@ namespace TodoApp.Controllers
              _context.Todos.Add(newTodo);
             await _context.SaveChangesAsync();
             return await getTodoByUserId(newTodo.UserId);
+        }
+
+
+        [HttpPut("{id}")]
+
+        public async Task<IActionResult> UpdateTodo(int id, UpdateTodoDto item)
+        {
+            if(id != item.Id) // 
+                return BadRequest();
+
+            var existTodo = await _context.Todos.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (existTodo == null) // bu durumda database'de id li bir todo yoktur
+                return NotFound();
+
+            var user = await _context.Users.FindAsync(item.UserId); 
+
+            if (user == null) // kullnaıcnı girmiş oldugu user id hatalı (database olan bir userid girilmeli)
+                return BadRequest("Userid is incorrect that's not found in database");
+
+
+            existTodo.TaskName = item.TaskName;
+            existTodo.IsComplete = item.IsComplete;
+            existTodo.DeadLine = new DateTime(item.Year, item.Month, item.Day); 
+            existTodo.User =user;
+            existTodo.UserId = item.UserId;
+            
+ 
+            await _context.SaveChangesAsync();
+
+            return await GetTodo(id);
         }
      
     }

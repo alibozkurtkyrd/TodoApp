@@ -35,7 +35,7 @@ namespace TodoApp.Controllers
             }
 
 
-            var getTodoDtos = await _context.Todos
+            var getTodoDtos = await _context.Todos // this line is required for showing todos collection property
                 .Where(t => t.UserId == dbUser.Id)
                 .Select(t1 => new getTodoDto { // I do not want to get "UserId" from Todo table thus, I use select clauses
                     Id = t1.Id,

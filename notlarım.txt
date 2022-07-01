@@ -20,7 +20,7 @@
         datetime class i nin public DateTime(int year, int month, int day); seklinde constructor i var
         createTodoDto da yıl mont ve day i ayrı ayrı int alıp TodoController icinde olsuturuabilirsin
 
-        dto başarılı şekilde olusturuldu
+        * dto başarılı şekilde olusturuldu
 
     + TodoController daki CreateTodo methodunda geriye TODO objesi dönüyoruz bunun yerine bir dto dönsek daha
         iyi olur. Dto ismi getTodo olsun
@@ -42,3 +42,10 @@
 
             ** AYRICA bu methodu tarihe göre de sıralayabilrsin (dealine ini en yakın olan en üstte olur)
                 ÇÖZÜLDÜ
+
++ user tablosunda update işlemi
+    bir userda birden çok todo list olabiliyor(one to many) GUI olmadan user üzerinden TODO list i update etmek güç duruyor
+
+    todo icin yapılana update;
+        kullanıcı user_id özelliğini degistirebilir ancak kullanıcı database deki mevcut olan users dan birini seçmeli aksi halledebilirisn
+       NotFound hatası dönecek
