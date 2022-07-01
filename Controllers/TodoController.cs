@@ -24,15 +24,25 @@ namespace TodoApp.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetTodos()
-        { // bu method çıkarılmalı bence ya da 
+        {
+
+             
             var todos = await _context.Todos.ToListAsync();
+
             return Ok(todos);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<List<getTodoDto>>> getTodo(int userId)
+        [HttpGet("todoid/{todoid}")]
+        public async Task<IActionResult> GetTodo(int todoId)
+        { // bu method çıkarılmalı bence ya da 
+            var todo = await _context.Todos.FindAsync(todoId);
+            return Ok(todo);
+        }
+
+        [HttpGet("userid/{userId}")]
+        public async Task<ActionResult<List<getTodoDto>>> getTodoByUserId(int userId)
         {
-              var user = await _context.Users.FindAsync(userId);
+             var user = await _context.Users.FindAsync(userId);
              var Dtos = await _context.Todos
                 .Where(t => t.UserId == userId)
                 .Select(t1 => new getTodoDto
@@ -72,7 +82,7 @@ namespace TodoApp.Controllers
 
              _context.Todos.Add(newTodo);
             await _context.SaveChangesAsync();
-            return await getTodo(newTodo.UserId);
+            return await getTodoByUserId(newTodo.UserId);
         }
      
     }

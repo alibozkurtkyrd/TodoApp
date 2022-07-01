@@ -28,3 +28,10 @@
     + User icin bir dto olusturmalıyız  örnegin login yapınca password görülmesin 
 
         ayrıca login yapınca Todos listeside görülmüyor
+        sorun çözüldü
+
+    + TodoController de getby user id ve ve get by id şeklinde iki adet method olusturmalıyız   
+
+    ** ONEMLI : GetTodos methodunda user name i de getirmelisn
+
+            userController de olusturacagın getUser ile bunu halledebilirisn (getUserName de olaiblir)
