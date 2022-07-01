@@ -49,3 +49,4 @@
     todo icin yapılana update;
         kullanıcı user_id özelliğini degistirebilir ancak kullanıcı database deki mevcut olan users dan birini seçmeli aksi halledebilirisn
        NotFound hatası dönecek
+        BASARALI SEKİDE UYGULANDI
