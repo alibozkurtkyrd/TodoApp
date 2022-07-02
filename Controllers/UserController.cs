@@ -169,6 +169,20 @@ namespace TodoApp.Controllers
             return Ok("User is succesfully updated");
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var existUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (existUser == null)
+                return NotFound();
+
+            _context.Users.Remove(existUser);
+            await _context.SaveChangesAsync();
+
+            return Ok("Delete operation is Succesful");
+        }
+
 
 
     }

@@ -73,8 +73,9 @@ namespace TodoApp.Controllers
                 .Where(t => t.UserId == userId)
                 .Select(t1 => new getTodoDto
                     {
+                        Id = t1.Id,
                         TaskName = t1.TaskName,
-                         UserName = user.Name,  // user cannot be null becase it is checked in CreateTodo function
+                        UserName = user.Name,  // user cannot be null becase it is checked in CreateTodo function
                         IsComplete = t1.IsComplete,
                         DeadLine = t1.DeadLine,
                     }

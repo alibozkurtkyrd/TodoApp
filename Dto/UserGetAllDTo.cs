@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using TodoApp.Model;
 
@@ -14,7 +15,8 @@ namespace TodoApp.Dto
         public string FullName { get; set; }
 
         public string Email { get; set; } 
-      
+
+        [JsonIgnore]
         public ICollection<Todo>? Todos { get; set; }
 
         // public ArrayList? TaskInfo { get; set; } // it stores the taskName and taskId
