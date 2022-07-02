@@ -111,6 +111,7 @@ namespace TodoApp.Controllers
                     TaskName = t1.TaskName,
                     IsComplete = t1.IsComplete,
                     DeadLine = t1.DeadLine,
+                    UserName = dbUser.Name,
                 }).ToListAsync(); // get the list of todos list belogns to user from Todos table      
                 
 
@@ -130,8 +131,7 @@ namespace TodoApp.Controllers
         public async Task<IActionResult> Regiteration(User user)
         {
 
-            var dbUser = await _context.Users.Where(u =>u.Name == user.Name).FirstOrDefaultAsync(); // daha sonradan bunu maile göre yaparsan daha iyi olur
-            // email unique icin https://stackoverflow.com/questions/41246614/entity-framework-core-add-unique-constraint-code-first
+            var dbUser = await _context.Users.Where(u =>u.Email == user.Email).FirstOrDefaultAsync(); // Email unique degere sahip
             
             if (dbUser != null){
                 return BadRequest("Username already exists");
@@ -143,6 +143,32 @@ namespace TodoApp.Controllers
 
             return Ok("User is succesfully registired");
         }
+
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, User user)
+        {
+            if(id != user.Id) // json'da id degerini yazmayı unutma
+                return BadRequest();
+
+            var existUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (existUser == null) // user yok
+                return NotFound();
+
+
+            existUser.Name = user.Name;
+            existUser.Surname = user.Surname;
+            existUser.PhoneNumber = user.PhoneNumber;
+            existUser.Email = user.Email;
+            existUser.Password = PasswordEncription.hashPassword(user.Password);
+            // NOT: Todo'ları update işlemi buradan yapılmıyor
+
+            await _context.SaveChangesAsync();
+
+            return Ok("User is succesfully updated");
+        }
+
 
 
     }

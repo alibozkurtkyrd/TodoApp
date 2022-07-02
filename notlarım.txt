@@ -54,4 +54,10 @@
 + user icin getall methodunda ne olmalı:
     id, isim ve soyisim (birleşik), email adresi ve todo list id ve todo taskname olsun olmalı bunu icin bir dto olustur
 
-        * todo list ve taskname i almak icin çok zaman harcadım. Nested for each yapısı kullandım
+        ** todo list ve taskname i almak icin ÇOK ZAMAN HARCADIM. Nested for each yapısı kullandım
++ user update   
+    burada password u update ederekn Tools/PasswordEncripiton sınıfını tekrar kullanmalsıın
+
+
++ ONEMLI
+    user "REGISTRATION" işlemi EMAİL adresine göre yapılmalı
