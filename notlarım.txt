@@ -20,7 +20,7 @@
         datetime class i nin public DateTime(int year, int month, int day); seklinde constructor i var
         createTodoDto da yıl mont ve day i ayrı ayrı int alıp TodoController icinde olsuturuabilirsin
 
-        * dto başarılı şekilde olusturuldu
+        * dto BAŞARILI şekilde olusturuldu
 
     + TodoController daki CreateTodo methodunda geriye TODO objesi dönüyoruz bunun yerine bir dto dönsek daha
         iyi olur. Dto ismi getTodo olsun
@@ -28,7 +28,7 @@
     + User icin bir dto olusturmalıyız  örnegin login yapınca password görülmesin 
 
         ayrıca login yapınca Todos listeside görülmüyor
-        sorun çözüldü
+        sorun ÇÖZÜLDÜ
 
     + TodoController de getby user id ve ve get by id şeklinde iki adet method olusturmalıyız   
 
@@ -63,3 +63,5 @@
 + silme işlemi tamamlandı
     not: get by user id seklinde bir method userControlelr'de bulunmuyor onu eklemek istemedim çünkü login ile o bilgilere erisebiliyoruz
 
+*** Repository pattern kullanmadan CRUD işlemleri tamamlandı 
+    bir daha ki adım Repository pattern olusturmak onu ayrı bir branch da yapmalısın
