@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,6 +21,74 @@ namespace TodoApp.Controllers
         public UserController (ApiDbContext context)
         {
             _context = context;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllUser()
+        {
+
+            
+            // var users = await _context.Users 
+            //     .Select(u => new UserGetAllDTo
+            //     {
+            //         Id = u.Id,
+            //         FullName = String.Concat(u.Name, " ", u.Surname),
+            //         Email = u.Email,
+            //         Todos = u.Todos
+            //     })
+            //      // The todo list sorting is done according to the "task completion status" and secondly according to the "deadline."
+            //     .ToListAsync();
+
+            List<UserGetAllDTo> dtos = new List<UserGetAllDTo>();
+            // List taskInfo = new List;
+             
+             
+            // query syntax
+            var users = from user in _context.Users select new UserGetAllDTo
+            {
+                 Id = user.Id,
+                 FullName = String.Concat(user.Name, " ", user.Surname),
+                 Email = user.Email,
+                 Todos = user.Todos
+            };
+
+            foreach (var user in users)
+            {      
+                // List<String> taskInfo = new List<string>();
+                // ArrayList taskInfo = new ArrayList(); // for every iteration it should be redefined for getting empty list
+
+                List<TaskInfoDto> taskInfo = new List<TaskInfoDto>();
+               
+                if (user.Todos != null)
+                {
+                    // Console.WriteLine("if İÇERİSİ ");
+                    // Console.WriteLine($"{user.Todos.First().Id}");
+                    foreach (var item in user.Todos) // içte olan foreach loop unu kullanma nedenm:
+                    // user bilgilerini listelerken todo ile ilgili sadece todo id ve todo taskname i kullanmak istememdir
+                    //yorum satırındkai method query todo bilgerini getiriyordu ancak hepsini getirdigi için kulanmak istemedim
+                    {
+                        // Console.WriteLine($"{item.TaskName}");
+                        // taskInfo.Add(item.Id);
+                        // taskInfo.Add(item.TaskName);
+                        taskInfo.Add(new TaskInfoDto {
+                            TodoId = item.Id,
+                            TaskName = item.TaskName
+                        });
+                        // Console.WriteLine($"{taskInfo}");
+                    }
+                }
+
+
+                dtos.Add( new UserGetAllDTo {
+                    Id = user.Id,
+                    FullName = user.FullName, //String.Concat(user.Name, " ", user.Surname),
+                    Email = user.Email,
+                    TaskInfo = taskInfo,
+                });
+                //taskInfo.Clear(); // for every iteration all elements should be removed
+
+            }
+            return Ok(dtos);
         }
 
         [HttpPost]
