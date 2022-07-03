@@ -65,3 +65,45 @@
 
 *** Repository pattern kullanmadan CRUD işlemleri tamamlandı 
     bir daha ki adım Repository pattern olusturmak onu ayrı bir branch da yapmalısın
+
+
+--------------
+
++ Repository pattern 
+    kaynak: https://www.codeguru.com/csharp/repository-pattern-c-sharp/
+
+
+
+            https://dotnettutorials.net/lesson/repository-design-pattern-csharp/
+
+                ef nin direkt database ile iletişim kurmamalı çünkü duplication oluyor
+
+                Repository pattern sayesinde controllerde query ya da data'ya ulaşma ile ilgili bir code olmamış oluyor
+
+            https://medium.com/devopsturkiye/net-core-3-1-katmanl%C4%B1-mimari-ve-generic-repository-pattern-1-87990f1da3e5
+
+            https://youtu.be/yOfo7EhEAYw
+
+            https://youtu.be/-LAeEQSfOQk   (bu video'nun playlist inide göz at)
+    Ayrıca:
+
+        kod-uygulama/repository-pattern/udemy-indirilenler/
+
+
+
++ TodoController içersinde users tablosunu kullanmaya gerek var mı
+    gerek yok gibi duruyor çünkü Todo  simple navigation property olan user var
+
+    getTodoByUserId, CreateTodo ve UpdateTodo metodlarında Users tablosuna baglanılmış
+
+
+** CreateTodo ve UpdateTodo methodları (TodoController)
+    CreateTodo methodunda kullanıcının bir user id girmesi şart koşulmuş ancak zorunlu degil. Daha sonrada başka bir user a assign edebiliriz
+    ayrıca UpdateTodo'da da benzer bir sorun;
+        // proplem ancak bu durumd null degere sahip olan Todo'ları güncelleyemiyoruz
+    
+    getTodoByUserId
+        updateTodo daki user in null olma durumu buraya eklenmeli çünkü bu methodda userId ile sorgu yapıyor null ise hata dönsün
+    o yüzden orası DÜZELTİLMELİ
+
+    

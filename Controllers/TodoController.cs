@@ -94,7 +94,7 @@ namespace TodoApp.Controllers
         {
             var user = await _context.Users.FindAsync(item.UserId); // ilgili user ı bluyoruz
 
-            if (user == null)
+            if (user == null) // aslında user id tanımlanmasada olur
                 return NotFound();
 
 
@@ -127,9 +127,9 @@ namespace TodoApp.Controllers
 
             var user = await _context.Users.FindAsync(item.UserId); 
 
-            if (user == null) // kullnaıcnı girmiş oldugu user id hatalı (database olan bir userid girilmeli)
+            if (user == null) // kullnaıcnı girmiş oldugu user id hatalı (databasede olan bir userid girilmeli)
                 return BadRequest("Userid is incorrect that's not found in database");
-
+            // proplem ancak bu durumda null degere sahip olan Todo'ları güncelleyemiyoruz
 
             existTodo.TaskName = item.TaskName;
             existTodo.IsComplete = item.IsComplete;
