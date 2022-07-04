@@ -1,1 +1,2 @@
 + todo list sıralması öncelikle tamamlanma durumuna göre daha sonradan da dealine zamanına göre yapılmaktadır
+    GetAllTodosWithUser methodu

@@ -17,13 +17,17 @@ namespace TodoApp.Controllers
     [ApiController]
     public class UserController:ControllerBase
     {
-         private readonly ApiDbContext _context;
+        
+        
         private readonly IUserRepository _userRepository;
 
-        public UserController (ApiDbContext context, IUserRepository userRepository)
+        
+
+        public UserController ( IUserRepository userRepository, ITodoRepository todoRepository)
         {
-            _context = context;
+            
             _userRepository = userRepository;
+            
         }
 
         [HttpGet]

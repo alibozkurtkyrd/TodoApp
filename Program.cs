@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITodoRepository, TodoRepository>();
 builder.Services.AddDbContext<ApiDbContext>(options =>
     {			
 	    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")); // burada senin sql provider bilgin gelecek

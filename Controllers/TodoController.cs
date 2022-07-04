@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApp.Data;
+using TodoApp.Data.Abstract;
 using TodoApp.Dto;
 using TodoApp.Model;
 
@@ -16,52 +17,31 @@ namespace TodoApp.Controllers
     public class TodoController : ControllerBase
     {
         private readonly ApiDbContext _context;
+        private readonly ITodoRepository _todoRepository;
 
-        public TodoController (ApiDbContext context)
+        public TodoController ( ApiDbContext context, ITodoRepository todoRepository )
         {
             _context = context;
+            _todoRepository = todoRepository;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetTodos()
+        public IActionResult GetTodos()
         {
-
-             
-            // var todos = await _context.Todos.ToListAsync();
-            //left inner join
-            var todos = await _context.Todos 
-                .Include(t => t.User) // navigation property included
-                .Select(t1 => new 
-                {
-                    Id = t1.Id,
-                    TaskName = t1.TaskName,
-                    UserName = t1.User.Name,  // user cannot be null becase it is checked in CreateTodo function
-                    IsComplete = t1.IsComplete,
-                    DeadLine = t1.DeadLine,
-                    UserId = t1.UserId
-                })
-                .OrderBy(t1 => t1.IsComplete) 
-                .ThenBy(t1 => t1.DeadLine)   // The todo list sorting is done according to the "task completion status" and secondly according to the "deadline."
-                .ToListAsync();
+            var todos = _todoRepository.GetAllTodosWithUser();
 
             return Ok(todos);
         }
 
         [HttpGet("todoid/{todoid}")]
-        public async Task<IActionResult> GetTodo(int todoId)
-        { // bu method çıkarılmalı bence ya da 
-            //var todo = await _context.Todos.FindAsync(todoId);
+        public IActionResult GetTodo(int todoId)
+        { 
 
-            // lets try query syntax
-            var query = from td in _context.Todos where td.Id == todoId select new {
-                    Id = td.Id,
-                    TaskName = td.TaskName,
-                    UserName = td.User.Name,  // user cannot be null becase it is checked in CreateTodo function
-                    IsComplete = td.IsComplete,
-                    DeadLine = td.DeadLine,
-                    UserId = td.UserId
-            };
+            if (!_todoRepository.TodoExist(todoId))
+                return NotFound();
 
+            var query = _todoRepository.GetTodoByUserName(todoId);
+         
             return Ok(query);
         }
 
@@ -113,35 +93,35 @@ namespace TodoApp.Controllers
         }
 
 
-        [HttpPut("{id}")]
+        // [HttpPut("{id}")]
 
-        public async Task<IActionResult> UpdateTodo(int id, UpdateTodoDto item)
-        {
-            if(id != item.Id) // 
-                return BadRequest();
+        // public async Task<IActionResult> UpdateTodo(int id, UpdateTodoDto item)
+        // {
+        //     if(id != item.Id) // 
+        //         return BadRequest();
 
-            var existTodo = await _context.Todos.FirstOrDefaultAsync(x => x.Id == id);
+        //     var existTodo = await _context.Todos.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (existTodo == null) // bu durumda database'de id li bir todo yoktur
-                return NotFound();
+        //     if (existTodo == null) // bu durumda database'de id li bir todo yoktur
+        //         return NotFound();
 
-            var user = await _context.Users.FindAsync(item.UserId); 
+        //     var user = await _context.Users.FindAsync(item.UserId); 
 
-            if (user == null) // kullnaıcnı girmiş oldugu user id hatalı (databasede olan bir userid girilmeli)
-                return BadRequest("Userid is incorrect that's not found in database");
-            // proplem ancak bu durumda null degere sahip olan Todo'ları güncelleyemiyoruz
+        //     if (user == null) // kullnaıcnı girmiş oldugu user id hatalı (databasede olan bir userid girilmeli)
+        //         return BadRequest("Userid is incorrect that's not found in database");
+        //     // proplem ancak bu durumda null degere sahip olan Todo'ları güncelleyemiyoruz
 
-            existTodo.TaskName = item.TaskName;
-            existTodo.IsComplete = item.IsComplete;
-            existTodo.DeadLine = new DateTime(item.Year, item.Month, item.Day); 
-            existTodo.User =user;
-            existTodo.UserId = item.UserId;
+        //     existTodo.TaskName = item.TaskName;
+        //     existTodo.IsComplete = item.IsComplete;
+        //     existTodo.DeadLine = new DateTime(item.Year, item.Month, item.Day); 
+        //     existTodo.User =user;
+        //     existTodo.UserId = item.UserId;
             
  
-            await _context.SaveChangesAsync();
+        //     await _context.SaveChangesAsync();
 
-            return await GetTodo(id);
-        }
+        //     return await GetTodo(id);
+        // }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodo(int id)

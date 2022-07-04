@@ -50,7 +50,7 @@ namespace TodoApp.Data.Concrete
                 {
                     foreach (var item in user.Todos) // içte olan foreach loop unu kullanma nedenm:
                     // user bilgilerini listelerken todo ile ilgili sadece todo id ve todo taskname i kullanmak istememdir
-                    //yorum satırındkai method query todo bilgerini getiriyordu ancak hepsini getirdigi için kulanmak istemedim
+                    //yorum satırındkai method query todo bilgerini getiriyordu ancak tüm column'ları getirdigi için kulanmak istemedim
                     {
                         taskInfo.Add(new TaskInfoDto {
                             TodoId = item.Id,
@@ -94,7 +94,7 @@ namespace TodoApp.Data.Concrete
                         Name = dbUser.Name,
                         Surname = dbUser.Surname,
                         PhoneNumber = dbUser.PhoneNumber,
-                        Email = user.Email, // parametre olara userDto giriyoruz (sadece email ve password var) digerlerini database den alıyoruz
+                        Email = user.Email, // parametre olara userDto giriyoruz (sadece email ve password var) digerlerini database(dbUser) den alıyoruz
                         getTodoDtos = getTodoDtos
                     }
             );

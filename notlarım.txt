@@ -114,11 +114,13 @@
     o yüzden orası DÜZELTİLMELİ
 
     
-+ GenericRepository sınıfını silmelisin
-    Data/Concrete folder i altında
+
 
 + userLogin parametre olarak userDto alsa daha iyi olur
 
 
 + Register işlemini getby id'i kullandıktan sonra yap
         UYGULANDI
+
+*** Todo listesine sahip user'ı silince hata aldım
+    ekran alıntısı postman-delete.png
