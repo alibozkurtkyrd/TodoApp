@@ -85,9 +85,16 @@
             https://youtu.be/yOfo7EhEAYw
 
             https://youtu.be/-LAeEQSfOQk   (bu video'nun playlist inide göz at)
-    Ayrıca:
 
-        kod-uygulama/repository-pattern/udemy-indirilenler/
+                  github hesabı: https://github.com/teddysmithdev/pokemon-review-api
+        
+        Ayrıca:
+
+            kod-uygulama/repository-pattern/udemy-indirilenler/ kısmında bak
+
+            https://codewithmukesh.com/blog/repository-pattern-in-aspnet-core/
+
+
 
 
 
@@ -107,3 +114,10 @@
     o yüzden orası DÜZELTİLMELİ
 
     
++ GenericRepository sınıfını silmelisin
+    Data/Concrete folder i altında
+
++ userLogin parametre olarak userDto alsa daha iyi olur
+
+
+Register işlemini getby id'i kullandıktan sonra yap

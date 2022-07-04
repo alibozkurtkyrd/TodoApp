@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApp.Data;
+using TodoApp.Data.Abstract;
 using TodoApp.Dto;
 using TodoApp.Model;
 using TodoApp.Tools;
@@ -16,131 +17,72 @@ namespace TodoApp.Controllers
     [ApiController]
     public class UserController:ControllerBase
     {
-        private readonly ApiDbContext _context;
+         private readonly ApiDbContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public UserController (ApiDbContext context)
+        public UserController (ApiDbContext context, IUserRepository userRepository)
         {
             _context = context;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllUser()
+        public IActionResult GetAllUser()
         {
 
-            
-            // var users = await _context.Users 
-            //     .Select(u => new UserGetAllDTo
-            //     {
-            //         Id = u.Id,
-            //         FullName = String.Concat(u.Name, " ", u.Surname),
-            //         Email = u.Email,
-            //         Todos = u.Todos
-            //     })
-            //      // The todo list sorting is done according to the "task completion status" and secondly according to the "deadline."
-            //     .ToListAsync();
+            var userGetAllDto = _userRepository.GetAllUsersWithTodo();
+            return Ok(userGetAllDto);
+        }
+        [HttpGet("{UserId}")]
+        public IActionResult GetUser(int UserId)
+        {
+            if(!_userRepository.UserExist(UserId))
+                return NotFound();
 
-            List<UserGetAllDTo> dtos = new List<UserGetAllDTo>();
-            // List taskInfo = new List;
-             
-             
-            // query syntax
-            var users = from user in _context.Users select new UserGetAllDTo
-            {
-                 Id = user.Id,
-                 FullName = String.Concat(user.Name, " ", user.Surname),
-                 Email = user.Email,
-                 Todos = user.Todos
-            };
+            var user = _userRepository.GetById(UserId);
 
-            foreach (var user in users)
-            {      
-                // List<String> taskInfo = new List<string>();
-                // ArrayList taskInfo = new ArrayList(); // for every iteration it should be redefined for getting empty list
+            if (!ModelState.IsValid)
+               return BadRequest(ModelState);
 
-                List<TaskInfoDto> taskInfo = new List<TaskInfoDto>();
-               
-                if (user.Todos != null)
-                {
-                    // Console.WriteLine("if İÇERİSİ ");
-                    // Console.WriteLine($"{user.Todos.First().Id}");
-                    foreach (var item in user.Todos) // içte olan foreach loop unu kullanma nedenm:
-                    // user bilgilerini listelerken todo ile ilgili sadece todo id ve todo taskname i kullanmak istememdir
-                    //yorum satırındkai method query todo bilgerini getiriyordu ancak hepsini getirdigi için kulanmak istemedim
-                    {
-                        // Console.WriteLine($"{item.TaskName}");
-                        // taskInfo.Add(item.Id);
-                        // taskInfo.Add(item.TaskName);
-                        taskInfo.Add(new TaskInfoDto {
-                            TodoId = item.Id,
-                            TaskName = item.TaskName
-                        });
-                        // Console.WriteLine($"{taskInfo}");
-                    }
-                }
-
-
-                dtos.Add( new UserGetAllDTo {
+            return Ok(
+                new {
                     Id = user.Id,
-                    FullName = user.FullName, //String.Concat(user.Name, " ", user.Surname),
-                    Email = user.Email,
-                    TaskInfo = taskInfo,
-                });
-                //taskInfo.Clear(); // for every iteration all elements should be removed
-
-            }
-            return Ok(dtos);
+                    Name = user.Name,
+                    Email = user.Email
+                }
+            );
         }
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> userLogin(User user)
+        public IActionResult userLogin(User user)
         {
-            string password = PasswordEncription.hashPassword(user.Password); // PasswordEncriptio Tools klasörü altında olusturulan dosya
-            var dbUser = await _context.Users.Where(u => u.Email == user.Email && u.Password == password).FirstOrDefaultAsync();
-
-            if (dbUser == null)
-            {
-                return BadRequest("Username or password is incorrect");
-            }
+          
+             if (!_userRepository.UserExist(user))
+                return NotFound();
 
 
-            var getTodoDtos = await _context.Todos // this line is required for showing todos collection property
-                .Where(t => t.UserId == dbUser.Id)
-                .Select(t1 => new getTodoDto { // I do not want to get "UserId" from Todo table thus, I use select clauses
-                    Id = t1.Id,
-                    TaskName = t1.TaskName,
-                    IsComplete = t1.IsComplete,
-                    DeadLine = t1.DeadLine,
-                    UserName = dbUser.Name,
-                }).ToListAsync(); // get the list of todos list belogns to user from Todos table      
-                
+            var userLoginDto = _userRepository.Login(user);
 
-            return Ok(new UserLoginDto
-            {
-                Id = dbUser.Id,
-                Name = dbUser.Name,
-                Surname = dbUser.Surname,
-                PhoneNumber = dbUser.PhoneNumber,
-                Email = dbUser.Email,
-                getTodoDtos = getTodoDtos
-            });
+           
+        
+            return Ok(userLoginDto);
         }
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Regiteration(User user)
+        public IActionResult Regiteration(User user)
         {
 
-            var dbUser = await _context.Users.Where(u =>u.Email == user.Email).FirstOrDefaultAsync(); // Email unique degere sahip
+            var dbUser = _context.Users.Where(u =>u.Email == user.Email).FirstOrDefault(); // Email unique degere sahip
             
             if (dbUser != null){
-                return BadRequest("Username already exists");
+                return BadRequest("User already exists");
             }	
 
             user.Password = PasswordEncription.hashPassword(user.Password); // database e pasaportu hash edilmiş sekilde gönderizyoruz
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
-
+            _userRepository.Register(user);
+            
             return Ok("User is succesfully registired");
         }
 
