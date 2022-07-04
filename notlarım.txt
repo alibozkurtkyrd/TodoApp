@@ -120,4 +120,5 @@
 + userLogin parametre olarak userDto alsa daha iyi olur
 
 
-Register işlemini getby id'i kullandıktan sonra yap
++ Register işlemini getby id'i kullandıktan sonra yap
+        UYGULANDI

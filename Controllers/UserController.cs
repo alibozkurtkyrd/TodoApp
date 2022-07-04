@@ -61,11 +61,8 @@ namespace TodoApp.Controllers
              if (!_userRepository.UserExist(user))
                 return NotFound();
 
-
             var userLoginDto = _userRepository.Login(user);
-
-           
-        
+                  
             return Ok(userLoginDto);
         }
 
@@ -73,12 +70,11 @@ namespace TodoApp.Controllers
         [Route("register")]
         public IActionResult Regiteration(User user)
         {
+            if (user == null)
+                return BadRequest(ModelState);
 
-            var dbUser = _context.Users.Where(u =>u.Email == user.Email).FirstOrDefault(); // Email unique degere sahip
-            
-            if (dbUser != null){
+            if (_userRepository.UserExist(user))
                 return BadRequest("User already exists");
-            }	
 
             user.Password = PasswordEncription.hashPassword(user.Password); // database e pasaportu hash edilmiş sekilde gönderizyoruz
             _userRepository.Register(user);

@@ -48,21 +48,16 @@ namespace TodoApp.Data.Concrete
                 // dışarıda tanımlayınca Clear() methodu hata veriyor
                 if (user.Todos != null)
                 {
-                    // Console.WriteLine("if İÇERİSİ ");
-                    // Console.WriteLine($"{user.Todos.First().Id}");
                     foreach (var item in user.Todos) // içte olan foreach loop unu kullanma nedenm:
                     // user bilgilerini listelerken todo ile ilgili sadece todo id ve todo taskname i kullanmak istememdir
                     //yorum satırındkai method query todo bilgerini getiriyordu ancak hepsini getirdigi için kulanmak istemedim
                     {
-                        
                         taskInfo.Add(new TaskInfoDto {
                             TodoId = item.Id,
                             TaskName = item.TaskName
-                        });
-                        
+                        });                      
                     }
                 }
-
 
                 dtos.Add( new UserGetAllDTo {
                     Id = user.Id,
@@ -83,8 +78,8 @@ namespace TodoApp.Data.Concrete
                 var dbUser =  _context.Users.Where(u => u.Email == user.Email && u.Password == password).FirstOrDefault();
          
                 var getTodoDtos = _context.Todos // this line is required for showing todos collection property
-                .Where(t => t.UserId == dbUser.Id) // null olma durumu userController içerisinde userLogin methodunda kontrol ediliyor
-                .Select(t1 => new getTodoDto { // I do not want to get "UserId" from Todo table thus, I use select clauses
+                .Where(t => t.UserId == dbUser.Id) // null olma durumu userController içerisinde userLogin methodunda(UserExist) kontrol ediliyor
+                .Select(t1 => new getTodoDto { // I do not want to get "UserId" from Todo table thus, I used select clauses
                     Id = t1.Id,
                     TaskName = t1.TaskName,
                     IsComplete = t1.IsComplete,
