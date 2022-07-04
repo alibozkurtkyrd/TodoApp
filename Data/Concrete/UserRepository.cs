@@ -127,16 +127,6 @@ namespace TodoApp.Data.Concrete
             return _context.Users.Any(u => u.Id == userId);
         }
 
-        // public bool CheckuniquenessEmail(UserGetAllDTo user)
-        // { //Email adrese unique degere sahiptir. 
-        
-        //     var dbUser =  _context.Users.Where(u =>u.Email == user.Email).FirstOrDefault(); 
-            
-        //     if (dbUser != null){
-        //         return false;
-        //     }	
 
-        //     return true;
-        // }
     }
 }

@@ -33,6 +33,7 @@ namespace TodoApp.Controllers
             var userGetAllDto = _userRepository.GetAllUsersWithTodo();
             return Ok(userGetAllDto);
         }
+
         [HttpGet("{UserId}")]
         public IActionResult GetUser(int UserId)
         {
@@ -104,15 +105,21 @@ namespace TodoApp.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public IActionResult DeleteUser(int id)
         {
-            var existUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (existUser == null)
+            if(!_userRepository.UserExist(id))
+            {
                 return NotFound();
+            }
 
-            _context.Users.Remove(existUser);
-            await _context.SaveChangesAsync();
+            var userToDelete = _userRepository.GetById(id);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+           
+            _userRepository.Delete(userToDelete);
+           
 
             return Ok("Delete operation is Succesful");
         }
