@@ -17,6 +17,11 @@ namespace TodoApp.Data.Concrete
  
         }
 
+        public User FindUser(int userId)
+        { // bu fonksiyon yeni bir Todo listesi eklenirken Todo.User sutununa user eklemek için kullanılcack
+            return _context.Users.Find(userId);
+        }
+
         public List<GetAllTodoDto> GetAllTodosWithUser()
         { // Todo bilgileri arasında UserName bilgisinide getimiş olur
             //left inner join
@@ -29,7 +34,7 @@ namespace TodoApp.Data.Concrete
                     UserName = t1.User.Name,  // user cannot be null becase it is checked in CreateTodo function
                     IsComplete = t1.IsComplete,
                     DeadLine = t1.DeadLine,
-                    UserId = t1.UserId               
+                    UserId =  t1.UserId               
                 })
                 .OrderBy(t1 => t1.IsComplete) 
                 .ThenBy(t1 => t1.DeadLine)   // The todo list sorting is done according to the "task completion status" and secondly according to the "deadline."
@@ -84,5 +89,7 @@ namespace TodoApp.Data.Concrete
         { // this function is require for getTodoByUserId in TodoControllers.c file
             return _context.Users.Any(u => u.Id == userId);
         }
+
+        
     }
 }

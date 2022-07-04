@@ -109,6 +109,8 @@
     ayrıca UpdateTodo'da da benzer bir sorun;
         // proplem ancak bu durumd null degere sahip olan Todo'ları güncelleyemiyoruz
     
+
+    
     getTodoByUserId
         updateTodo daki user in null olma durumu buraya eklenmeli çünkü bu methodda userId ile sorgu yapıyor null ise hata dönsün
     o yüzden orası DÜZELTİLMELİ
@@ -124,3 +126,5 @@
 
 *** Todo listesine sahip user'ı silince hata aldım
     ekran alıntısı postman-delete.png
+    userId not require yapılarak sorun ÇÖZÜLDÜ
+

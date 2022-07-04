@@ -18,5 +18,7 @@ namespace TodoApp.Data.Abstract
         bool TodoExist(int todoId);
 
         bool UserExist(int userId);
+
+        User FindUser(int userId);
     }
 }

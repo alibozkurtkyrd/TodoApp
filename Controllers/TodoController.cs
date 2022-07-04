@@ -57,28 +57,26 @@ namespace TodoApp.Controllers
 
         }
 
-        // [HttpPost]
-        // public async Task<ActionResult<List<getTodoDto>>> CreateTodo (createTodoDto item)
-        // {
-        //     var user = await _context.Users.FindAsync(item.UserId); // ilgili user ı bluyoruz
+        [HttpPost]
+        public IActionResult CreateTodo (createTodoDto item)
+        {
 
-        //     if (user == null) // aslında user id tanımlanmasada olur
-        //         return NotFound();
+            var user = _todoRepository.FindUser(item.UserId);
 
+            
+            var newTodo = new Todo
+            {
+                TaskName = item.TaskName,
+                IsComplete = item.IsComplete,
+                DeadLine = new DateTime(item.Year, item.Month, item.Day), 
+                User =  user,
+                UserId = user == null ? null : user.Id
+            };
 
-        //     var newTodo = new Todo
-        //     {
-        //         TaskName = item.TaskName,
-        //         IsComplete = item.IsComplete,
-        //         DeadLine = new DateTime(item.Year, item.Month, item.Day), 
-        //         User = user,
-        //         UserId = item.UserId
-        //     };
+            _todoRepository.Create(newTodo);
 
-        //      _context.Todos.Add(newTodo);
-        //     await _context.SaveChangesAsync();
-        //     return await getTodoByUserId(newTodo.UserId);
-        // }
+            return GetTodo(newTodo.Id);
+        }
 
 
         // [HttpPut("{id}")]

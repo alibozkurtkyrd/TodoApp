@@ -19,7 +19,7 @@ namespace TodoApp.Model
         //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")] // bu calısmayabilir api'de çalısıtıgımız icin
         public DateTime? DeadLine { get; set; }   
 
-        public int UserId { get; set; } // this is for 1 to n relation
+        public int? UserId { get; set; } // this is for 1 to n relation
         
         [JsonIgnore]
         // simple navigation property

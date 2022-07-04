@@ -14,7 +14,7 @@ namespace TodoApp.Data.Mapping
         {
             builder.HasOne(t => t.User)
                 .WithMany(u => u.Todos)
-                .HasForeignKey(t => t.UserId)
+                .HasForeignKey(t => t.UserId).IsRequired(false)
                 .OnDelete(DeleteBehavior.SetNull); // cascade olmasını istemiyoruz yani ilişkili tablodaki verilerde gitmesin
         }
     }
