@@ -84,25 +84,21 @@ namespace TodoApp.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, User user)
+        public IActionResult UpdateUser(int id, User user)
         {
+            if (user == null)
+                return BadRequest(ModelState);
+
             if(id != user.Id) // json'da id degerini yazmayı unutma
-                return BadRequest();
+                return BadRequest("Check Id");
 
-            var existUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
-
-            if (existUser == null) // user yok
+            if (!_userRepository.UserExist(id))
                 return NotFound();
 
 
-            existUser.Name = user.Name;
-            existUser.Surname = user.Surname;
-            existUser.PhoneNumber = user.PhoneNumber;
-            existUser.Email = user.Email;
-            existUser.Password = PasswordEncription.hashPassword(user.Password);
-            // NOT: Todo'ları update işlemi buradan yapılmıyor
+            user.Password = PasswordEncription.hashPassword(user.Password);
 
-            await _context.SaveChangesAsync();
+            _userRepository.Update(user);
 
             return Ok("User is succesfully updated");
         }
