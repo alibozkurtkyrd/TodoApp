@@ -13,6 +13,10 @@ namespace TodoApp.Data.Abstract
 
         List<GetAllTodoDto> GetAllTodosWithUser();
 
+        List<getTodoDto> GetTodoByUserId(int userId);
+
         bool TodoExist(int todoId);
+
+        bool UserExist(int userId);
     }
 }

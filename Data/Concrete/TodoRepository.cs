@@ -18,7 +18,7 @@ namespace TodoApp.Data.Concrete
         }
 
         public List<GetAllTodoDto> GetAllTodosWithUser()
-        {
+        { // Todo bilgileri arasında UserName bilgisinide getimiş olur
             //left inner join
             var todos = _context.Todos 
                 .Include(t => t.User) // navigation property included
@@ -38,8 +38,30 @@ namespace TodoApp.Data.Concrete
             return todos;
         }
 
+        public List<getTodoDto> GetTodoByUserId(int userId)
+        { // userId'ye göre Todo'yu bulmamızı sağlar
+
+            var user =  _context.Users.Find(userId); // first find the user
+
+            var Dtos =  _context.Todos
+                .Where(t => t.UserId == userId)
+                .Select(t1 => new getTodoDto
+                    {
+                        Id = t1.Id,
+                        TaskName = t1.TaskName,
+                        UserName = user.Name,  
+                        IsComplete = t1.IsComplete,
+                        DeadLine = t1.DeadLine,
+                    }
+
+                )
+                .ToList();// thanks to getTodoDto class, we can show the username which is not belongs to Todo.cs class
+
+            return Dtos;
+        }
+
         public IQueryable<GetAllTodoDto> GetTodoWithUserName(int todoId)
-        {
+        { // Tüm Todo'ları listeler. Bu method sayesinde Username bilgisinide görmüş oluyoruz
             // lets try query syntax
             var query = from td in _context.Todos where td.Id == todoId select new GetAllTodoDto {
                     Id = td.Id,
@@ -55,7 +77,12 @@ namespace TodoApp.Data.Concrete
 
         public bool TodoExist(int todoId)
         {
-            return _context.Todos.Any(u => u.Id == todoId);
+            return _context.Todos.Any(t => t.Id == todoId);
+        }
+
+        public bool UserExist(int userId)
+        { // this function is require for getTodoByUserId in TodoControllers.c file
+            return _context.Users.Any(u => u.Id == userId);
         }
     }
 }

@@ -46,51 +46,39 @@ namespace TodoApp.Controllers
         }
 
         [HttpGet("userid/{userId}")]
-        public async Task<ActionResult<List<getTodoDto>>> getTodoByUserId(int userId)
+        public ActionResult<List<getTodoDto>> getTodoByUserId(int userId)
         {
-             var user = await _context.Users.FindAsync(userId); // first find the user
-             var Dtos = await _context.Todos
-                .Where(t => t.UserId == userId)
-                .Select(t1 => new getTodoDto
-                    {
-                        Id = t1.Id,
-                        TaskName = t1.TaskName,
-                        UserName = user.Name,  // user cannot be null becase it is checked in CreateTodo function
-                        IsComplete = t1.IsComplete,
-                        DeadLine = t1.DeadLine,
-                    }
-
-                )
-                .ToListAsync();
-                // thanks to getTodoDto class, we can show the username which is not belongs to Todo.cs class
-
+            if(!_todoRepository.UserExist(userId))
+                return NotFound();
+                
+            var Dtos = _todoRepository.GetTodoByUserId(userId);
           
             return Ok(Dtos);
 
         }
 
-        [HttpPost]
-        public async Task<ActionResult<List<getTodoDto>>> CreateTodo (createTodoDto item)
-        {
-            var user = await _context.Users.FindAsync(item.UserId); // ilgili user ı bluyoruz
+        // [HttpPost]
+        // public async Task<ActionResult<List<getTodoDto>>> CreateTodo (createTodoDto item)
+        // {
+        //     var user = await _context.Users.FindAsync(item.UserId); // ilgili user ı bluyoruz
 
-            if (user == null) // aslında user id tanımlanmasada olur
-                return NotFound();
+        //     if (user == null) // aslında user id tanımlanmasada olur
+        //         return NotFound();
 
 
-            var newTodo = new Todo
-            {
-                TaskName = item.TaskName,
-                IsComplete = item.IsComplete,
-                DeadLine = new DateTime(item.Year, item.Month, item.Day), 
-                User = user,
-                UserId = item.UserId
-            };
+        //     var newTodo = new Todo
+        //     {
+        //         TaskName = item.TaskName,
+        //         IsComplete = item.IsComplete,
+        //         DeadLine = new DateTime(item.Year, item.Month, item.Day), 
+        //         User = user,
+        //         UserId = item.UserId
+        //     };
 
-             _context.Todos.Add(newTodo);
-            await _context.SaveChangesAsync();
-            return await getTodoByUserId(newTodo.UserId);
-        }
+        //      _context.Todos.Add(newTodo);
+        //     await _context.SaveChangesAsync();
+        //     return await getTodoByUserId(newTodo.UserId);
+        // }
 
 
         // [HttpPut("{id}")]
