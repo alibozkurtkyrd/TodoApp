@@ -38,7 +38,7 @@ namespace TodoApp.Data.Concrete
             return todos;
         }
 
-        public IQueryable<GetAllTodoDto> GetTodoByUserName(int todoId)
+        public IQueryable<GetAllTodoDto> GetTodoWithUserName(int todoId)
         {
             // lets try query syntax
             var query = from td in _context.Todos where td.Id == todoId select new GetAllTodoDto {

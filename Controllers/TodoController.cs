@@ -40,7 +40,7 @@ namespace TodoApp.Controllers
             if (!_todoRepository.TodoExist(todoId))
                 return NotFound();
 
-            var query = _todoRepository.GetTodoByUserName(todoId);
+            var query = _todoRepository.GetTodoWithUserName(todoId);
          
             return Ok(query);
         }

@@ -9,7 +9,7 @@ namespace TodoApp.Data.Abstract
 {
     public interface ITodoRepository: IRepository<Todo>
     {
-        IQueryable<GetAllTodoDto> GetTodoByUserName(int todoId);
+        IQueryable<GetAllTodoDto> GetTodoWithUserName(int todoId);
 
         List<GetAllTodoDto> GetAllTodosWithUser();
 
