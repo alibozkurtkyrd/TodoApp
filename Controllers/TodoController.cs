@@ -70,7 +70,7 @@ namespace TodoApp.Controllers
                 IsComplete = item.IsComplete,
                 DeadLine = new DateTime(item.Year, item.Month, item.Day), 
                 User =  user,
-                UserId = user == null ? null : user.Id
+                UserId = (user == null ? null : user.Id)
             };
 
             _todoRepository.Create(newTodo);
@@ -79,35 +79,35 @@ namespace TodoApp.Controllers
         }
 
 
-        // [HttpPut("{id}")]
+        [HttpPut("{id}")]
 
-        // public async Task<IActionResult> UpdateTodo(int id, UpdateTodoDto item)
-        // {
-        //     if(id != item.Id) // 
-        //         return BadRequest();
+        public IActionResult UpdateTodo(int id, UpdateTodoDto item)
+        {
+            if (item == null)
+                return BadRequest(ModelState);
 
-        //     var existTodo = await _context.Todos.FirstOrDefaultAsync(x => x.Id == id);
+            if(id != item.Id) // json'da id degerini yazmayı unutma
+                return BadRequest("Check Id");
 
-        //     if (existTodo == null) // bu durumda database'de id li bir todo yoktur
-        //         return NotFound();
+            if (!_todoRepository.TodoExist(id))
+                return NotFound();
 
-        //     var user = await _context.Users.FindAsync(item.UserId); 
+            var existTodo = _todoRepository.GetById(id);
+            var user =  _todoRepository.FindUser(item.UserId); //user id degismesi durumuna karşı yeni user bulunmalı
+                // user olmayadabilir
 
-        //     if (user == null) // kullnaıcnı girmiş oldugu user id hatalı (databasede olan bir userid girilmeli)
-        //         return BadRequest("Userid is incorrect that's not found in database");
-        //     // proplem ancak bu durumda null degere sahip olan Todo'ları güncelleyemiyoruz
-
-        //     existTodo.TaskName = item.TaskName;
-        //     existTodo.IsComplete = item.IsComplete;
-        //     existTodo.DeadLine = new DateTime(item.Year, item.Month, item.Day); 
-        //     existTodo.User =user;
-        //     existTodo.UserId = item.UserId;
+            existTodo.TaskName = item.TaskName;
+            existTodo.IsComplete = item.IsComplete;
+            existTodo.DeadLine = new DateTime(item.Year, item.Month, item.Day); 
+            existTodo.User =user; // user null olabilir
+            existTodo.UserId = (user == null ? null : item.UserId); // eger user null ise userId null olarak atancak 
+                                                        // user null degil ise item.UserId(user.Id) atanacak
             
- 
-        //     await _context.SaveChangesAsync();
+            
+            _todoRepository.Update(existTodo);
 
-        //     return await GetTodo(id);
-        // }
+            return  GetTodo(id);
+        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodo(int id)
