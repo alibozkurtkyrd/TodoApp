@@ -16,12 +16,12 @@ namespace TodoApp.Controllers
     [ApiController]
     public class TodoController : ControllerBase
     {
-        private readonly ApiDbContext _context;
+        
         private readonly ITodoRepository _todoRepository;
 
-        public TodoController ( ApiDbContext context, ITodoRepository todoRepository )
+        public TodoController (ITodoRepository todoRepository )
         {
-            _context = context;
+            
             _todoRepository = todoRepository;
         }
 
@@ -110,17 +110,23 @@ namespace TodoApp.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTodo(int id)
+        public IActionResult DeleteTodo(int id)
         {
-            var existTodo = await _context.Todos.FirstOrDefaultAsync(x => x.Id == id);
-
-            if (existTodo == null)
+            if(!_todoRepository.TodoExist(id))
+            {
                 return NotFound();
+            }
 
-            _context.Todos.Remove(existTodo);
-            await _context.SaveChangesAsync();
+            var todoDelete = _todoRepository.GetById(id);
 
-            return Ok(existTodo);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+           
+            _todoRepository.Delete(todoDelete);
+           
+
+            return Ok("Delete operation is Succesful");
+
         }
      
     }
