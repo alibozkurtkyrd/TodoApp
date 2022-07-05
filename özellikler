@@ -1,6 +1,0 @@
-+ todo list sıralması öncelikle tamamlanma durumuna göre daha sonradan da dealine zamanına göre yapılmaktadır
-    GetAllTodosWithUser methodu
-
-+ Todo listesindeki foreign key olan userId null olabilir yani her bir Todo bir user' sahip olusturmak
-zorunda degil bunun bu gerekçe ile CASCADE i de aktif yapmadım
-    
