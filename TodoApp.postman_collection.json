@@ -1,0 +1,345 @@
+{
+	"info": {
+		"_postman_id": "93d7ee42-3006-4952-be10-87c5f9085b21",
+		"name": "TodoApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20550330"
+	},
+	"item": [
+		{
+			"name": "UserOperation",
+			"item": [
+				{
+					"name": "GetAllUsers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5022/api/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5022",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByUserId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5022/api/user/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5022",
+							"path": [
+								"api",
+								"user",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Name\": \"mehmet\",\n    \"Surname\": \"aydın\",\n    \"PhoneNumber\": \"555 333 22 11\",\n    \"Email\": \"mehmet@gmail.com\",\n    \"Password\": \"mehmet\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5022/api/user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5022",
+							"path": [
+								"api",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {   \n\n    \"Email\": \"ali@gmail.com\",\n    \"Password\": \"ali\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5022/api/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5022",
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Id\":4,\n    \"Name\": \"ali\",\n    \"Surname\": \"bozkurt\",\n    \"PhoneNumber\":\"5533574805\",\n    \"Email\": \"ali@gmail.com\",\n    \"Password\": \"ali\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5022/api/user/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5022",
+							"path": [
+								"api",
+								"user",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteUser",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5022/api/user/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5022",
+							"path": [
+								"api",
+								"user",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TodoOperation",
+			"item": [
+				{
+					"name": "getAllTodos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5022/api/todo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5022",
+							"path": [
+								"api",
+								"todo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getByTodoId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5022/api/todo/todoid/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5022",
+							"path": [
+								"api",
+								"todo",
+								"todoid",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getByUserId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5022/api/todo/userid/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5022",
+							"path": [
+								"api",
+								"todo",
+								"userid",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addTodo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"TaskName\" :\"test 1\",\n    \"IsComplete\" : false,\n    \"UserId\" : 4\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5022/api/todo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5022",
+							"path": [
+								"api",
+								"todo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addTodoWithUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"TaskName\" :\"test 15\",\n    \"IsComplete\" : false,\n    \"Year\" : 2024,\n    \"Month\": 7,\n    \"Day\" : 15,\n    \"UserId\": 6\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5022/api/todo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5022",
+							"path": [
+								"api",
+								"todo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\" : 14,\n    \"TaskName\" :\"test update12\",\n    \"IsComplete\" : true,\n    \"Year\" : 1995,\n    \"Month\": 10,\n    \"Day\" : 15,\n    \"UserId\" : 4\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5022/api/todo/14",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5022",
+							"path": [
+								"api",
+								"todo",
+								"14"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5022/api/todo/9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5022",
+							"path": [
+								"api",
+								"todo",
+								"9"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
