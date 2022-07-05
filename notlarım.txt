@@ -129,3 +129,4 @@
     userId not require yapılarak sorun ÇÖZÜLDÜ
 
 ** gitignore dosyasını kaldır
+    removed
