@@ -14,7 +14,7 @@ it's a ASP.NET web api project with ASP.NET Core
 
 + Due to security reason, passwords were stored in database via hash function.
 
-+ When listing products, they are sorted first by the "Completed" column, then by the "Deadline" column.
++ When listing products, they are sorted first by the "IsCompleted" column, then by the "Deadline" column.
 
 + Data Transfer Object (DTO) was used to prevent unnecessary lines such as password and id in the database to be directly printed on the screen.
 
