@@ -2,11 +2,14 @@
 
 it's a ASP.NET web api project with ASP.NET Core
 
+
 ---
 
 + There is a one to many relations between User and Todo tables.
 
 + Repository Design Pattern is used.
+
++ Code First Approach is used.
 
 + "UserId" is foreign. It's set the NULL rather than "CASCADE".
 
@@ -21,5 +24,15 @@ it's a ASP.NET web api project with ASP.NET Core
 
 + You can use the "TodoApp.postman_collection.json" file in the main directory to test the code.
 
+
+---
+###  Technoliges
+
+* .Net 6
+* Entity Framework Core
+* Postman
+* Sqlite
+* Visual Studio Code
+* c#
 
 [Click](https://drive.google.com/file/d/1icqcwAlePnXsYQu8RHt_kxYluyrITgmd/view?usp=sharing) for a video on how the program works
