@@ -26,7 +26,7 @@ it's a ASP.NET web api project with ASP.NET Core
 
 
 ---
-###  Technoliges
+###  Technologies
 
 * .Net 6
 * Entity Framework Core
@@ -34,5 +34,7 @@ it's a ASP.NET web api project with ASP.NET Core
 * Sqlite
 * Visual Studio Code
 * c#
+
+---
 
 [Click](https://drive.google.com/file/d/1icqcwAlePnXsYQu8RHt_kxYluyrITgmd/view?usp=sharing) for a video on how the program works
